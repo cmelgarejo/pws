@@ -16,7 +16,7 @@ namespace ProxyWebService.Controllers
             //return new ProcardResponse("0");
             ConsultaRequest consulta = new ConsultaRequest()
             {
-                document = "180108"
+                identity_document = "180108"
             };
             return new ProcardResponse(consulta, "1#00000000#2906#VIVIANA L FONCECA GAMARRA     #P1#CREDICARD CLASICA TARJ.MI                #+0000000067242000#+0000000069442000");
             return new ProcardResponse(consulta, "91#      #0");
@@ -35,6 +35,13 @@ namespace ProxyWebService.Controllers
         public ProcardResponse Pago([FromBody]PagoRequest pago)
         {
             return ProcardSocketClient.Get(pago);
+        }
+
+        // POST procard/api/v1/alta
+        [HttpPost]
+        public ProcardResponse Alta([FromBody]AltaRequest alta)
+        {
+            return ProcardSocketClient.Get(alta);
         }
 
     }

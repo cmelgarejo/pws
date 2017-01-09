@@ -7,17 +7,17 @@ namespace ProxyWebService.Classes
 {
     public class ConsultaRequest : BaseProcardRequestClass, IBaseProcardRequestClass
     {
-        string _document = string.Empty;
+        string _identity_document = string.Empty;
 
-        public string document
+        public string identity_document
         {
             get
             {
-                return _document;
+                return _identity_document;
             }
             set
             {
-                _document = value.PadLeft(9, '0');
+                _identity_document = value.PadLeft(9, '0');
             }
         }
 
@@ -29,7 +29,7 @@ namespace ProxyWebService.Classes
 
         public string ProcardMessage()
         {
-            return BuildProcardMessage(ProcardCredentials, document);
+            return BuildProcardMessage(ProcardCredentials, identity_document);
         }
 
         /*

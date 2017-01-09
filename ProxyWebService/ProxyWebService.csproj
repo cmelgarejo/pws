@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Classes\AltaRequest.cs" />
     <Compile Include="Classes\PagoRequest.cs" />
     <Compile Include="Classes\ConsultaRequest.cs" />
     <Compile Include="Classes\Base\BaseProcardRequestClass.cs" />
