@@ -11,9 +11,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ProxyWebService.Tests</RootNamespace>
     <AssemblyName>ProxyWebService.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -92,8 +93,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
-    <Compile Include="Controllers\ValuesControllerTest.cs" />
+    <Compile Include="Controllers\DefaultControllerTest.cs" />
+    <Compile Include="Controllers\ProcardControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />
@@ -103,7 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ProxyWebService\ProxyWebService.csproj">
-      <Project>{FBBAD1FE-177F-47D0-B058-B052719F7CDE}</Project>
+      <Project>{fbbad1fe-177f-47d0-b058-b052719f7cde}</Project>
       <Name>ProxyWebService</Name>
     </ProjectReference>
   </ItemGroup>
