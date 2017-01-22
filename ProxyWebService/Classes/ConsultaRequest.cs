@@ -23,7 +23,7 @@ namespace ProxyWebService.Classes
 
         public ConsultaRequest()
         {
-            operation = ConfigurationManager.AppSettings["ProcardOperation_Consulta"];
+            __operation__ = ConfigurationManager.AppSettings["ProcardOperation_Consulta"];
         }
 
 
@@ -45,10 +45,8 @@ namespace ProxyWebService.Classes
         public string[] ResponseParams()
         {
             List<string> outParams = new List<string>();
-            foreach (var item in ConfigurationManager.AppSettings.AllKeys.Where(p => p.Contains("ProcardOperation_Consulta_OutParam_")))
-            {
+            foreach (var item in ConfigurationManager.AppSettings.AllKeys.Where(p => p.Contains("ProcardOperation_Consulta_OutParam_")).OrderBy(p => p))
                 outParams.Add(ConfigurationManager.AppSettings[item]);
-            }
             return outParams.ToArray();
         }
     }

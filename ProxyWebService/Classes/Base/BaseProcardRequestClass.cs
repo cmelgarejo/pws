@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 
 namespace ProxyWebService.Classes
 {
     public class BaseProcardRequestClass
     {
-        public string operation { get; set; }
+        public char __numberPaddingChar = ConfigurationManager.AppSettings["ProcardOperation_Alta_NumberPaddingChar"].First();
+        public char __space = ' ';
+        public string __operation__ { get; set; }
         string separator { get { return ConfigurationManager.AppSettings["ProcardMessageSeparator"]; } }
         string Username { get { return ConfigurationManager.AppSettings["ProcardUsername"]; } }
         string Password { get { return ConfigurationManager.AppSettings["ProcardPassword"]; } }
@@ -22,7 +25,7 @@ namespace ProxyWebService.Classes
         /// <returns>stringf formatted to send to the PROCARD SOCKET</returns>
         public string BuildProcardMessage(params string[] values)
         {
-            List<string> pcmsg = new List<string> { operation };
+            List<string> pcmsg = new List<string> { __operation__ };
             pcmsg.AddRange(values);
             return string.Join(separator, pcmsg);
         }

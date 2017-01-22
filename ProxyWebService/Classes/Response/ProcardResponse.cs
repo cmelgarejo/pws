@@ -11,13 +11,16 @@ namespace ProxyWebService.Classes
         public bool success { get; set; }
         public string response_code { get; set; }
         public string response_message { get; set; }
-        public string original_message { get; set; }
+        public string original_procard_request { get; set; }
+        public string original_procard_response { get; set; }
         public Dictionary<string, string> result { get; set; }
         IBaseProcardRequestClass _request;
+
 
         public ProcardResponse(IBaseProcardRequestClass request)
         {
             _request = request;
+            original_procard_request = _request.ProcardMessage();
             success = false;
             response_code = ConfigurationManager.AppSettings["Procard_Response_Default"];
         }
@@ -25,6 +28,7 @@ namespace ProxyWebService.Classes
         public ProcardResponse(IBaseProcardRequestClass request, string message)
         {
             _request = request;
+            original_procard_request = _request.ProcardMessage();
             success = false;
             response_code = ConfigurationManager.AppSettings["Procard_Response_Default"];
             Parse(message);
@@ -34,23 +38,31 @@ namespace ProxyWebService.Classes
         {
             try
             {
+                original_procard_response = strMsg;
                 string[] split_result = strMsg.Split(ConfigurationManager.AppSettings["ProcardMessageSeparator"].ToCharArray());
                 response_code = split_result.First().PadLeft(2, '0');
                 if (split_result.Length > 1)
-                    if (response_code == ConfigurationManager.AppSettings["Procard_Response_Accepted"] ||
-                        _request.GetType() == typeof(ConsultaRequest))
+                {
+                    if (_request.GetType() == typeof(ConsultaRequest) && response_code == ConfigurationManager.AppSettings["Procard_Response_Accepted_Consulta"])
+                     {
                         success = true;
-                response_message = ConfigurationManager.AppSettings[string.Format("Procard_Response_{0}", response_code)];
-                original_message = strMsg;
+                        response_code = ConfigurationManager.AppSettings["Procard_Response_Accepted"];
+                    }
+                    if (response_code == ConfigurationManager.AppSettings["Procard_Response_Accepted"])
+                        success = true;
+                    response_message = ConfigurationManager.AppSettings[string.Format("Procard_Response_{0}", response_code)];
+                }
+                if (string.IsNullOrEmpty(response_message))
+                    response_message = original_procard_response;
                 //if (success)
                 result = _request.ResponseParams().Zip(split_result.Skip(1), (key, value) => new { key, value })
-                                                 .ToDictionary(kv => kv.key, kv => kv.value);
+                                                 .ToDictionary(kv => kv.key, kv => kv.value.Replace("\r\n", string.Empty).Trim());
             }
             catch (Exception ex)
             {
                 response_code = ConfigurationManager.AppSettings["Procard_Response_Default"];
                 success = false;
-                original_message = ex.Message;
+                response_message = ex.Message;
             }
         }
     }

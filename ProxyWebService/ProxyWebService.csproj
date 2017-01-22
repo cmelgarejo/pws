@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Classes\ModificacionRequest .cs" />
     <Compile Include="Classes\AltaRequest.cs" />
     <Compile Include="Classes\PagoRequest.cs" />
     <Compile Include="Classes\ConsultaRequest.cs" />
@@ -157,7 +158,9 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Filesys.pubxml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="Views\Default\Index.cshtml" />

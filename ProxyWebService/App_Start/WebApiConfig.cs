@@ -18,8 +18,8 @@ namespace ProxyWebService
 
             config.Routes.MapHttpRoute(
                 name: "PWSApi",
-                routeTemplate: "{controller}/api/v1/{action}",
-                defaults: new { action = RouteParameter.Optional }
+                routeTemplate: "{controller}/api/v1/{action}/{id}",
+                defaults: new { action = RouteParameter.Optional, id = RouteParameter.Optional }
             );
         }
     }
