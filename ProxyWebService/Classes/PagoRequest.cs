@@ -8,6 +8,43 @@ namespace ProxyWebService.Classes
 {
     public class PagoRequest : BaseProcardRequestClass, IBaseProcardRequestClass
     {
+        public bool IsPagoCredito { get; set; }
+        /*{
+            get { return operation_type == ConfigurationManager.AppSettings["ProcardOperation_Pago_Pago"]; }
+            set
+            {
+                if (value)
+                {
+                    operation_type = ConfigurationManager.AppSettings["ProcardOperation_Pago_Pago"];
+                }
+            }
+        }*/
+
+        public bool IsPago
+        {
+            get { return operation_type == ConfigurationManager.AppSettings["ProcardOperation_Pago_Pago"]; }
+            set { if (value) operation_type = ConfigurationManager.AppSettings["ProcardOperation_Pago_Pago"]; }
+        }
+
+        public bool IsReversaPago
+        {
+            get { return operation_type == ConfigurationManager.AppSettings["ProcardOperation_Pago_Reversa_Pago"]; }
+            set { if (value) operation_type = ConfigurationManager.AppSettings["ProcardOperation_Pago_Reversa_Pago"]; }
+        }
+
+        public bool IsAdelanto
+        {
+            get { return operation_type == ConfigurationManager.AppSettings["ProcardOperation_Pago_Adelanto"]; }
+            set { if (value) operation_type = ConfigurationManager.AppSettings["ProcardOperation_Pago_Adelanto"]; }
+        }
+
+        public bool IsReversaAdelanto
+        {
+            get { return operation_type == ConfigurationManager.AppSettings["ProcardOperation_Pago_Reversa_Adelanto"]; }
+            set { if (value) operation_type = ConfigurationManager.AppSettings["ProcardOperation_Pago_Reversa_Adelanto"]; }
+        }
+
+
         string _operation_type = string.Empty;
         string _response = string.Empty;
         string _card_number = string.Empty;
@@ -31,8 +68,10 @@ namespace ProxyWebService.Classes
         string _state = string.Empty;
 
         //1#75#0#2906#P1#004913675#0#100000#0#7803554#0#9999999#20161230113523#0#00#0#0#0#0#107#107#GXTARJETAM#PROCARDDES#0
+        //1#75#0#2906#P1#004913675#0#100000#0#9999999#0#0000000#20170123113332#0#00#0#0#0#0#107#107#GXTARJETAM#PROCARDDES#0
         //1#75#0#2906#XL#004913675#0#100000#0#7803554#0#0000000#20170122105400#0#00#0#0#0#0#107#107#GXTARJETAM#PROCARDDES#0
         //1#00#0#2906#P1#004913675#0000#100000#99999#7803554#0#0000000#20170122110206#0#00#0#0#0#0#107#107#GXTARJETAM#PROCARDDES#0
+        //1#75#0#2906#P1#004913675#0#100000#0#0000000#0#0000000#20170123113009#0#00#0#0#0#0#000#000#GXTARJETAM#PROCARDDES#0
         public string operation_type { get { return _operation_type.PadLeft(2, __numberPaddingChar); } set { _operation_type = value; } }
         public string response { get { return _response.PadLeft(1, __numberPaddingChar); } set { _response = value; } }
         public string card_number { get { return _card_number.PadLeft(4, __space); } set { _card_number = value; } }
@@ -46,8 +85,7 @@ namespace ProxyWebService.Classes
         {
             get
             {
-
-                if (operation_type == ConfigurationManager.AppSettings["ProcardOperation_Pago_Pago"] || operation_type == ConfigurationManager.AppSettings["ProcardOperation_Pago_Reversa_Pago"])
+                if (IsPago || IsReversaPago)
                     _expiration = ConfigurationManager.AppSettings["ProcardOperation_Pago_Expiration"];
                 else
                     _expiration = _expiration.PadLeft(4, __numberPaddingChar);
@@ -55,21 +93,31 @@ namespace ProxyWebService.Classes
             }
             set { _expiration = value; }
         }
-        public string amount { get; set; } //{ get { return _amount; } set { _amount = value; } }
+        public string amount { get { return _amount.PadLeft(1, __numberPaddingChar); } set { _amount = value; } }
         public string authorization
         {
             get
             {
-
-                if (operation_type == ConfigurationManager.AppSettings["ProcardOperation_Pago_Pago"] || operation_type == ConfigurationManager.AppSettings["ProcardOperation_Pago_Adelanto"])
-                    _authorization = ConfigurationManager.AppSettings["ProcardOperation_Pago_AuthorizationCode"];
-                //else //? if there's any other mutation on the data
-                //    _authorization = _authorization.PadLeft(4, __numberPaddingChar);
+                if (IsPago || IsAdelanto)
+                    return ConfigurationManager.AppSettings["ProcardOperation_Pago_AuthorizationCode"];
                 return _authorization;
             }
             set { _authorization = value; }
         }
-        public string commerce { get { return _commerce.PadLeft(7, __numberPaddingChar); } set { _commerce = value; } }
+        public string commerce
+        {
+            //TODO: Order this
+            get
+            {
+                if (IsPagoCredito)
+                    _commerce = ConfigurationManager.AppSettings["TarjetaMI_CommerceCode_Credit"];
+                else if (IsReversaPago || IsReversaAdelanto || IsPago || IsAdelanto)
+                    _commerce = ConfigurationManager.AppSettings["TarjetaMI_CommerceCode_Debit"];
+                return _commerce;
+            }
+            set { _commerce = value; }
+        }
+        //public string commerce { get { return _commerce.PadLeft(7, __numberPaddingChar); } set { _commerce = value; } }
         public string quota { get { return _quota.PadLeft(1, __numberPaddingChar); } set { _quota = value; } }
         public string coupon { get { return _coupon.PadLeft(7, __numberPaddingChar); } set { _coupon = value; } } //{ get; set; } 
         public string datetime { get { return string.IsNullOrEmpty(_datetime) ? DateTime.Now.ToString("yyyyMMddHHmmss") : _datetime; } set { _datetime = !string.IsNullOrEmpty(value) ? value : DateTime.Now.ToString("yyyyMMddHHmmss"); } } //AAAAMMDDHHMMSS
@@ -85,8 +133,10 @@ namespace ProxyWebService.Classes
 
         public PagoRequest()
         {
+            IsPago = true;
             __operation__ = ConfigurationManager.AppSettings["ProcardOperation_Pago"];
-            _operation_type = ConfigurationManager.AppSettings["ProcardOperation_Pago_Pago"];
+            provider = ConfigurationManager.AppSettings["TarjetaMI_ProviderCode"];
+            entity = ConfigurationManager.AppSettings["TarjetaMI_EntityCode"];
         }
 
 

@@ -66,5 +66,21 @@ namespace ProxyWebService.Controllers
             return ProcardSocketClient.Get(pago);
         }
 
+        // POST procard/api/v1/pago_reversa
+        [HttpPost]
+        public ProcardResponse Pago_Reversa([FromBody]PagoRequest pago)
+        {
+            pago.IsReversaPago = true;
+            return ProcardSocketClient.Get(pago);
+        }
+
+        // POST procard/api/v1/pago_reversa
+        [HttpPost]
+        public ProcardResponse Credito([FromBody]PagoRequest credito)
+        {
+            credito.IsPagoCredito = true;
+            return ProcardSocketClient.Get(credito);
+        }
+
     }
 }
