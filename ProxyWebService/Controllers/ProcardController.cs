@@ -1,25 +1,22 @@
-﻿using System;
+﻿using ProxyWebService.Classes;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using ProxyWebService.Classes;
 
 namespace ProxyWebService.Controllers
 {
     public class ProcardController : ApiController
     {
-        public ProcardResponse Get()
+        [HttpGet]
+        public ProcardResponse Test()
         {
             //return ProcardSocketClient.Get(new ConsultaRequest() { document = "1499526" }.ProcardMessage()); //Consulta Test
             //return new ProcardResponse("0");
-            ConsultaRequest consulta = new ConsultaRequest()
+            AltaRequest consulta = new AltaRequest()
             {
                 identity_document = "180108"
             };
             ////1#75#0#2906#P1#004913675#0#100000#0#7803554#0#9999999#20161230113523#0#00#0#0#0#0#107#107#GXTARJETAM#PROCARDDES#0
-            return new ProcardResponse(consulta, "1#00000000#2906#VIVIANA L FONCECA GAMARRA     #P1#CREDICARD CLASICA TARJ.MI                #+0000000067242000#+0000000069442000");
+            return new ProcardResponse(consulta, SynchronousSocketClient.WriteAndGetReply("3#90#108#1499526#233#XL#5894332330000048#233000040#D#20170126#112233#GXTARJETAM#PROCARDDES"));
             //return new ProcardResponse(consulta, "91#      #0");
 
         }

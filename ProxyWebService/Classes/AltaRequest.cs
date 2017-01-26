@@ -48,9 +48,10 @@ namespace ProxyWebService.Classes
 
         public string sequence_number { get { return _sequence_number.PadLeft(12, __numberPaddingChar); } set { _sequence_number = value; } }
         public string identity_document { get { return _identity_document.PadLeft(9, __numberPaddingChar); } set { _identity_document = value; } }
-        public string entity_code { get { return _entity_code.PadLeft(3, __numberPaddingChar); } set { _entity_code = value; } }
-        public string card_class { get { return _card_class.PadLeft(2, __numberPaddingChar); } set { _card_class = value; } }
-        public string card_number { get { return _card_number.PadRight(16, __space); } set { _card_number = value; } }
+        //public string entity_code { get { return _entity_code.PadLeft(3, __numberPaddingChar); } set { _entity_code = value; } }
+        string entity_code { get { return ConfigurationManager.AppSettings["TarjetaMI_EntityCode"]; } }
+        //public string card_class { get { return _card_class.PadLeft(2, __numberPaddingChar); } set { _card_class = value; } }
+        string card_class { get { return ConfigurationManager.AppSettings["TarjetaMI_CardClass"]; } }
         public string card_usernumber { get { return _card_usernumber.PadLeft(9, __numberPaddingChar); } set { _card_usernumber = value; } }
         public string card_username { get { return _card_username.PadRight(20, __space); } set { _card_username = value; } }
         public string address_street { get { return _address_street.PadRight(50, __space); } set { _address_street = value; } }
