@@ -124,7 +124,7 @@ namespace ProxyWebService.Classes
         public string ProcardMessage()
         {
             return BuildProcardMessage(_change_code, sequence_number, identity_document, entity_code,
-                card_class, card_usernumber, address_street, address_city, address_neighborhood,
+                card_class, card_username, address_street, address_city, address_neighborhood,
                 phone_home, phone_work, phone_mobile, email, birthdate, civil_status, gender, credit_line_cash, credit_line_quota, credit_line_special,
                 branch_office, detainer_code, account_number, account_type, payment_type, member_internal_number,
                 card_type, principal_document, date, time, ProcardCredentials);
