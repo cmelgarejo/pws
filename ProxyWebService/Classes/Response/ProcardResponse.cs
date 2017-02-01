@@ -43,8 +43,8 @@ namespace ProxyWebService.Classes
                 response_code = split_result.First().PadLeft(2, '0');
                 if (split_result.Length > 1)
                 {
-                    if (_request.GetType() == typeof(ConsultaRequest) && response_code == ConfigurationManager.AppSettings["Procard_Response_Accepted_Consulta"])
-                     {
+                    if (_request.GetType() == typeof(ConsultaRequest))// && response_code == ConfigurationManager.AppSettings["Procard_Response_Accepted_Consulta"])
+                    {
                         success = true;
                         response_code = ConfigurationManager.AppSettings["Procard_Response_Accepted"];
                     }
@@ -57,6 +57,16 @@ namespace ProxyWebService.Classes
                 //if (success)
                 result = _request.ResponseParams().Zip(split_result.Skip(1), (key, value) => new { key, value })
                                                  .ToDictionary(kv => kv.key, kv => kv.value.Replace("\r\n", string.Empty).Trim());
+                if (result.Keys.Count > 0 && _request.GetType() == typeof(ConsultaRequest)) // && response_code == ConfigurationManager.AppSettings["Procard_Response_Accepted_Consulta"])
+                {
+                    success = true;
+                    response_code = ConfigurationManager.AppSettings["Procard_Response_Accepted"];
+                }
+                else
+                {
+                    success = false;
+                    response_code = ConfigurationManager.AppSettings["Procard_Response_Default"];
+                }
             }
             catch (Exception ex)
             {
