@@ -31,3 +31,6 @@ Flexible enough to be aware of changes on the responses of the service, you can 
 ### Who do I talk to? ###
 
 * cmelgarejo :smile:
+
+
+## License: **MIT** ##
