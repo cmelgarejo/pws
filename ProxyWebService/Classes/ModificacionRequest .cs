@@ -30,7 +30,7 @@ namespace ProxyWebService.Classes
         public string ProcardMessage()
         {
             return BuildProcardMessage(change_code, sequence_number, identity_document, entity_code, card_class, card_number,
-                user_number,data, date, time, ProcardCredentials);
+                user_number, data, date, time, ProcardCredentials);
         }
 
         /*

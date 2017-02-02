@@ -65,10 +65,10 @@ namespace ProxyWebService.Controllers
 
         // POST procard/api/v1/pago_reversa
         [HttpPost]
-        public ProcardResponse Pago_Reversa([FromBody]PagoRequest pago)
+        public ProcardResponse Pago_Reversa([FromBody]PagoRequest pago_reversa)
         {
-            pago.IsReversaPago = true;
-            return ProcardSocketClient.Get(pago);
+            pago_reversa.IsReversaPago = true;
+            return ProcardSocketClient.Get(pago_reversa);
         }
 
         // POST procard/api/v1/pago_reversa
@@ -77,6 +77,15 @@ namespace ProxyWebService.Controllers
         {
             credito.IsPagoCredito = true;
             return ProcardSocketClient.Get(credito);
+        }
+
+        // POST procard/api/v1/credito_reversa
+        [HttpPost]
+        public ProcardResponse Credito_Reversa([FromBody]PagoRequest credito_reversa)
+        {
+            credito_reversa.IsReversaPago = true;
+            credito_reversa.IsPagoCredito = true;
+            return ProcardSocketClient.Get(credito_reversa);
         }
 
     }
