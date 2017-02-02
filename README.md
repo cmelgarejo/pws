@@ -34,3 +34,4 @@ Flexible enough to be aware of changes on the responses of the service, you can 
 
 
 ## License: **MIT** ##
+https://mit-license.org/
